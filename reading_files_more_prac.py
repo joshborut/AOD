@@ -40,47 +40,32 @@ def get_penguin_avgs(category):
             if penguin[category] != 'NA':
                 # Add to dict if species is not in it
                 if penguin['species'] not in sorted_data:
-                    sorted_data[penguin['species']] = {}
-                    sorted_data[penguin['species']][category] = []
+                    sorted_data[penguin['species']] = []
+                    sorted_data[penguin['species']].append(float(penguin[category]))
                 # Add value to species specific key
                 else:
-                    sorted_data[penguin['species']][category].append(float(penguin[category]))
+                    sorted_data[penguin['species']].append(float(penguin[category]))
         # Loop through each species in dict
         for species in sorted_data.keys():
             # Average the list of values for each species
-            sorted_data[species][category] = (sum(sorted_data[species][category]) / len(sorted_data[species][category]))
+            sorted_data[species] = (sum(sorted_data[species]) / len(sorted_data[species]))
         # Return sorted data
         return sorted_data
 
 
-def get_max(averaged_data, category):
-    # intializing max and max species
-    max_value = 0
-    max_species = ""
-    # Looping through species
-    for species in averaged_data.keys():
-        # Getting value for specified category
-        value = averaged_data[species][category]
-        # Checking if value is greater than current max
-        if value > max_value:
-            # Setting current max and current max species
-            max_value = value
-            max_species = species
-    # Returning the species with the max value and its value
-    return max_species, max_value
-
+data_max = lambda data: max(data, key=data.get)
 
 # 1: Beak size
 beak_averages = get_penguin_avgs('culmen_length_mm')
 print(f"Average beak lengths: {beak_averages}")
-max_beak_species, max_beak_size = get_max(beak_averages, 'culmen_length_mm')
-print (f"{max_beak_species} has the highest beak length, which is {max_beak_size}\n")
+max_beak_species = data_max(beak_averages)
+print(f"{max_beak_species} has the highest beak length, which is {beak_averages[max_beak_species]}\n")
 
 # 2: Mass
 mass_averages = get_penguin_avgs('body_mass_g')
-max_mass_species, max_mass = get_max(mass_averages, 'body_mass_g')
-print(f"Average masses: {get_penguin_avgs('body_mass_g')}")
-print(f"{max_mass_species} has the highest mass, which is {max_mass}\n")
+print(f"Average masses: {mass_averages}")
+max_mass_species = data_max(mass_averages)
+print(f"{max_mass_species} has the highest mass, which is {mass_averages[max_mass_species]}\n")
 
 # 3: Number of Chinstrap penguins on Dream Island
 print(f"Number of Chinstrap penguins are on Dream Island: {get_species_count('Chinstrap', 'Dream')}")
