@@ -53,6 +53,34 @@ def get_penguin_avgs(category):
         return sorted_data
 
 
-print(f"Average beak lengths: {get_penguin_avgs('culmen_length_mm')}")
+def get_max(averaged_data, category):
+    # intializing max and max species
+    max_value = 0
+    max_species = ""
+    # Looping through species
+    for species in averaged_data.keys():
+        # Getting value for specified category
+        value = averaged_data[species][category]
+        # Checking if value is greater than current max
+        if value > max_value:
+            # Setting current max and current max species
+            max_value = value
+            max_species = species
+    # Returning the species with the max value and its value
+    return max_species, max_value
+
+
+# 1: Beak size
+beak_averages = get_penguin_avgs('culmen_length_mm')
+print(f"Average beak lengths: {beak_averages}")
+max_beak_species, max_beak_size = get_max(beak_averages, 'culmen_length_mm')
+print (f"{max_beak_species} has the highest beak length, which is {max_beak_size}\n")
+
+# 2: Mass
+mass_averages = get_penguin_avgs('body_mass_g')
+max_mass_species, max_mass = get_max(mass_averages, 'body_mass_g')
 print(f"Average masses: {get_penguin_avgs('body_mass_g')}")
-print(f"Number of Chinstrap penguins are on Dream island: {get_species_count('Chinstrap', 'Dream')}")
+print(f"{max_mass_species} has the highest mass, which is {max_mass}\n")
+
+# 3: Number of Chinstrap penguins on Dream Island
+print(f"Number of Chinstrap penguins are on Dream Island: {get_species_count('Chinstrap', 'Dream')}")
